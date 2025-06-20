@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #141c27;
+            margin: 0;
+        }
+
+        .calculator {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            width: 320px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .display {
+            grid-column: 1 / -1; /* Ocupa todas las columnas */
+            background-color: #222;
+            color: #ffffff;
+            font-size: 2.5em;
+            padding: 20px 15px;
+            border: none;
+            border-radius: 8px;
+            text-align: right;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+            overflow: hidden; /* Para que el texto largo se oculte si excede el ancho */
+            white-space: nowrap; /* Para que el texto no salte de línea */
+            text-overflow: ellipsis; /* Para añadir puntos suspensivos si el texto es muy largo */
+        }
+
+        .btn {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #d0d0d0;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn.operator {
+            background-color: #ff9500;
+            color: #ffffff;
+        }
+
+        .btn.operator:hover {
+            background-color: #e68a00;
+        }
+
+        .btn.equals {
+            background-color: #007bff;
+            color: #ffffff;
+            grid-column: span 2; /* Ocupa dos columnas */
+        }
+
+        .btn.equals:hover {
+            background-color: #0069d9;
+        }
+
+        .btn.clear {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn.clear:hover {
+            background-color: #c82333;
+        }
+
+        /* Botones específicos para colores */
+        .btn.zero {
+            grid-column: span 2; /* El botón 0 ocupa dos columnas */
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="display" id="display" value="0" readonly>
+
+        <button class="btn clear" id="clear">AC</button>
+        <button class="btn" id="delete">DEL</button>
+        <button class="btn operator" id="divide">/</button>
+
+        <button class="btn" id="seven">7</button>
+        <button class="btn" id="eight">8</button>
+        <button class="btn" id="nine">9</button>
+        <button class="btn operator" id="multiply">*</button>
+
+        <button class="btn" id="four">4</button>
+        <button class="btn" id="five">5</button>
+        <button class="btn" id="six">6</button>
+        <button class="btn operator" id="subtract">-</button>
+
+        <button class="btn" id="one">1</button>
+        <button class="btn" id="two">2</button>
+        <button class="btn" id="three">3</button>
+        <button class="btn operator" id="add">+</button>
+
+        <button class="btn zero" id="zero">0</button>
+        <button class="btn" id="decimal">.</button>
+        <button class="btn equals" id="equals">=</button>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        const buttons = document.querySelectorAll('.btn');
+
+        let currentInput = '0'; // Almacena la entrada actual del usuario
+        let operator = null;     // Almacena el operador seleccionado (+, -, *, /)
+        let previousInput = '';  // Almacena el número anterior para la operación
+        let resetDisplay = false; // Indica si la pantalla debe ser reseteada en la próxima pulsación de número
+
+        // Función para actualizar la pantalla
+        function updateDisplay(value) {
+            display.value = value;
+        }
+
+        // Manejador de clic para los botones
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const buttonText = e.target.textContent; // Obtiene el texto del botón presionado
+
+                if (e.target.id === 'clear') { // Botón AC
+                    currentInput = '0';
+                    operator = null;
+                    previousInput = '';
+                    resetDisplay = false;
+                    updateDisplay(currentInput);
+                } else if (e.target.id === 'delete') { // Botón DEL
+                    currentInput = currentInput.slice(0, -1); // Elimina el último caracter
+                    if (currentInput === '') { // Si queda vacío, se pone en '0'
+                        currentInput = '0';
+                    }
+                    updateDisplay(currentInput);
+                } else if (e.target.classList.contains('operator')) { // Operadores (+, -, *, /)
+                    if (previousInput !== '' && operator !== null && !resetDisplay) {
+                        // Si ya hay una operación pendiente y se pulsa otro operador, calcula el resultado intermedio
+                        calculateResult();
+                    }
+                    previousInput = currentInput;
+                    operator = buttonText;
+                    resetDisplay = true; // Prepara la pantalla para la próxima entrada numérica
+                } else if (e.target.id === 'equals') { // Botón =
+                    if (operator && previousInput !== '') {
+                        calculateResult();
+                        operator = null; // Reinicia el operador después del cálculo
+                        resetDisplay = true; // Prepara para una nueva operación o serie de números
+                    }
+                } else if (e.target.id === 'decimal') { // Botón .
+                    if (resetDisplay) {
+                        currentInput = '0.'; // Si la pantalla se reseteó, empieza con 0.
+                        resetDisplay = false;
+                    } else if (!currentInput.includes('.')) {
+                        currentInput += '.';
+                    }
+                    updateDisplay(currentInput);
+                } else { // Botones numéricos (0-9)
+                    if (currentInput === '0' || resetDisplay) {
+                        currentInput = buttonText;
+                        resetDisplay = false;
+                    } else {
+                        currentInput += buttonText;
+                    }
+                    updateDisplay(currentInput);
+                }
+            });
+        });
+
+        // Función para realizar el cálculo
+        function calculateResult() {
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+
+            if (isNaN(prev) || isNaN(current)) return; // Evitar cálculos con valores no numéricos
+
+            switch (operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        result = 'Error'; // Evitar división por cero
+                    } else {
+                        result = prev / current;
+                    }
+                    break;
+                default:
+                    return; // No hay operador, no se hace nada
+            }
+
+            // Manejo de resultados muy largos o flotantes
+            if (typeof result === 'number' && !Number.isInteger(result)) {
+                result = parseFloat(result.toFixed(8)); // Limitar a 8 decimales
+            }
+
+            currentInput = result.toString();
+            updateDisplay(currentInput);
+            previousInput = ''; // Limpiar el número anterior
+            operator = null;    // Limpiar el operador
+            resetDisplay = true; // Preparar para nueva entrada si se sigue operando
+        }
+
+        // Inicializar la pantalla con '0' al cargar
+        updateDisplay(currentInput);
+    </script>
+</body>
+</html>

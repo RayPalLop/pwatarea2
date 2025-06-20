@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reloj Analógico</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1d0d6e;
+            font-family: Arial, sans-serif;
+        }
+        
+        .clock-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .clock-face {
+            width: 100%;
+            height: 100%;
+            border: 8px solid #333;
+            border-radius: 50%;
+            background-color: white;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        
+        .hand {
+            position: absolute;
+            transform-origin: 50% 100%;
+            left: 50%;
+            bottom: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .hour-hand {
+            width: 8px;
+            height: 80px;
+            background-color: #333;
+            z-index: 3;
+            border-radius: 4px;
+        }
+        
+        .minute-hand {
+            width: 4px;
+            height: 120px;
+            background-color: #666;
+            z-index: 2;
+            border-radius: 2px;
+        }
+        
+        .second-hand {
+            width: 2px;
+            height: 140px;
+            background-color: red;
+            z-index: 1;
+        }
+        
+        .center-circle {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 4;
+        }
+        
+        .digital-time {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* Marcas de las horas */
+        .hour-mark {
+            position: absolute;
+            width: 4px;
+            height: 20px;
+            background-color: #333;
+            left: 50%;
+            top: 15px;
+            transform-origin: 50% 150px;
+            transform: translateX(-50%);
+        }
+        
+        /* Crear las 12 marcas de las horas */
+        .hour-mark:nth-child(1) { transform: translateX(-50%) rotate(0deg); }
+        .hour-mark:nth-child(2) { transform: translateX(-50%) rotate(30deg); }
+        .hour-mark:nth-child(3) { transform: translateX(-50%) rotate(60deg); }
+        .hour-mark:nth-child(4) { transform: translateX(-50%) rotate(90deg); }
+        .hour-mark:nth-child(5) { transform: translateX(-50%) rotate(120deg); }
+        .hour-mark:nth-child(6) { transform: translateX(-50%) rotate(150deg); }
+        .hour-mark:nth-child(7) { transform: translateX(-50%) rotate(180deg); }
+        .hour-mark:nth-child(8) { transform: translateX(-50%) rotate(210deg); }
+        .hour-mark:nth-child(9) { transform: translateX(-50%) rotate(240deg); }
+        .hour-mark:nth-child(10) { transform: translateX(-50%) rotate(270deg); }
+        .hour-mark:nth-child(11) { transform: translateX(-50%) rotate(300deg); }
+        .hour-mark:nth-child(12) { transform: translateX(-50%) rotate(330deg); }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="clock-face">
+            <!-- Marcas de las horas -->
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            <div class="hour-mark"></div>
+            
+            <!-- Manecillas -->
+            <div class="hand hour-hand" id="hourHand"></div>
+            <div class="hand minute-hand" id="minuteHand"></div>
+            <div class="hand second-hand" id="secondHand"></div>
+            <div class="center-circle"></div>
+        </div>
+        <div class="digital-time" id="digitalTime"></div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            
+            // Obtener horas, minutos y segundos
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            // Calcular los grados para cada manecilla
+            const hourDegrees = (hours % 12) * 30 + (minutes / 60) * 30;
+            const minuteDegrees = minutes * 6 + (seconds / 60) * 6;
+            const secondDegrees = seconds * 6;
+            
+            // Rotar las manecillas
+            document.getElementById('hourHand').style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
+            document.getElementById('minuteHand').style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
+            document.getElementById('secondHand').style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
+            
+            // Mostrar hora digital
+            const formattedHours = hours.toString().padStart(2, '0');
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const formattedSeconds = seconds.toString().padStart(2, '0');
+            document.getElementById('digitalTime').textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        }
+        
+        // Actualizar el reloj cada segundo
+        setInterval(updateClock, 1000);
+        
+        // Inicializar el reloj inmediatamente
+        updateClock();
+    </script>
+</body>
+</html>

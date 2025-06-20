@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Programación Web | Futurista</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6e45e2;
+            --secondary-color: #88d3ce;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --accent-color: #ff6b6b;
+            --glass-effect: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--dark-color), #16213e);
+            min-height: 100vh;
+            color: var(--light-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Efecto de partículas de fondo */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        /* Header futurista */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(110, 69, 226, 0.3); }
+            100% { text-shadow: 0 0 20px rgba(110, 69, 226, 0.8), 0 0 30px rgba(136, 211, 206, 0.5); }
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            color: var(--secondary-color);
+        }
+
+        .header::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            margin: 2rem auto;
+            border-radius: 2px;
+        }
+
+        /* Tarjeta de información con efecto vidrio */
+        .student-info {
+            background: var(--glass-effect);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--glass-shadow);
+            border: 1px solid var(--glass-border);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .student-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(110, 69, 226, 0.1),
+                rgba(136, 211, 206, 0.1),
+                transparent
+            );
+            transform: rotate(30deg);
+            z-index: -1;
+        }
+
+        .student-info h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .student-info h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
+        .student-info p {
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .student-info strong {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Grid de ejercicios futurista */
+        .exercises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .exercise-card {
+            background: var(--glass-effect);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--glass-shadow);
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-speed);
+            text-decoration: none;
+            color: var(--light-color);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .exercise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(110, 69, 226, 0.1),
+                rgba(136, 211, 206, 0.1)
+            );
+            z-index: -1;
+            opacity: 0;
+            transition: opacity var(--transition-speed);
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .exercise-card:hover::before {
+            opacity: 1;
+        }
+
+        .exercise-card:hover .exercise-number {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(110, 69, 226, 0.5);
+        }
+
+        .exercise-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            transition: all var(--transition-speed);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exercise-number::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0)
+            );
+            transform: rotate(30deg);
+            transition: all var(--transition-speed);
+        }
+
+        .exercise-card:hover .exercise-number::after {
+            left: 100%;
+            top: 100%;
+        }
+
+        .exercise-card h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        .exercise-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 3px;
+            transition: width var(--transition-speed);
+        }
+
+        .exercise-card:hover h3::after {
+            width: 100px;
+        }
+
+        .exercise-card p {
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: auto;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all var(--transition-speed);
+        }
+
+        .exercise-card:hover .tech-tag {
+            background: rgba(110, 69, 226, 0.3);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Footer futurista */
+        .footer {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+        }
+
+        .footer p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--light-color);
+            font-size: 1.2rem;
+            transition: all var(--transition-speed);
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Efectos de entrada */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .exercises-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .student-info, .exercise-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Efecto de cursor personalizado */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(110, 69, 226, 0.5);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(136, 211, 206, 0.5);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor personalizado -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Efecto de partículas -->
+    <div class="particles" id="particles"></div>
+
+    
+
+        <div class="student-info">
+            <h2>Programacion Avanzada Web</h2>
+            <p><strong>Objetivo:</strong> Dominar las tecnologías web modernas a través de ejercicios prácticos con funcionalidad avanzada.</p>
+            <p><strong>Tecnologías utilizadas:</strong> HTML5, CSS3, JavaScript </p>
+            <p><strong>Autor:</strong> <span class="author-name">RAUL PALACIOS LOPEZ</span></p>
+            <p><strong>Fecha:</strong> <span id="currentDate"></span></p>
+        </div>
+
+        <div class="exercises-grid">
+            <a href="ej01.html" class="exercise-card">
+                <div class="exercise-number">1</div>
+                <h3>Cambio de Estilo al Clic</h3>
+                <p>Interactividad con botones que cambian el color de fondo de elementos HTML utilizando eventos de JavaScript con efectos modernos.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej02.html" class="exercise-card">
+                <div class="exercise-number">2</div>
+                <h3>Calculadora Avanzada</h3>
+                <p>Calculadora científica con interfaz holográfica, operaciones complejas y modo oscuro/light.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej03.html" class="exercise-card">
+                <div class="exercise-number">3</div>
+                <h3>Efectos Hover 3D</h3>
+                <p>Transformaciones 3D y efectos de perspectiva al pasar el cursor, con transiciones fluidas.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej04.html" class="exercise-card">
+                <div class="exercise-number">4</div>
+                <h3>Reloj Digital Interactivo</h3>
+                <p>Reloj con múltiples husos horarios, efectos de neón y personalización de estilos.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej05.html" class="exercise-card">
+                <div class="exercise-number">5</div>
+                <h3>Formulario Inteligente</h3>
+                <p>Validación en tiempo real con feedback visual, autocompletado y efectos de enfoque.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej06.html" class="exercise-card">
+                <div class="exercise-number">6</div>
+                <h3>Task Manager Futurista</h3>
+                <p>Organizador de tareas con arrastrar/soltar, categorías visuales y sincronización.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej07.html" class="exercise-card">
+                <div class="exercise-number">7</div>
+                <h3>Galería Inmersiva</h3>
+                <p>Visualizador de imágenes con efecto parallax, zoom 3D y transiciones cinemáticas.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej08.html" class="exercise-card">
+                <div class="exercise-number">8</div>
+                <h3>Carrusel Holográfico</h3>
+                <p>Slider con efecto de profundidad, controles gestuales y animaciones fluidas.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej09.html" class="exercise-card">
+                <div class="exercise-number">9</div>
+                <h3>Temporizador Cuántico</h3>
+                <p>Cuenta regresiva con efectos de partículas, múltiples temporizadores y notificaciones.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+
+            <a href="ej10.html" class="exercise-card">
+                <div class="exercise-number">10</div>
+                <h3>Quiz Interactivo</h3>
+                <p>Sistema de preguntas con animaciones, progreso visual y resultados detallados.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <div class="social-links">
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Portfolio"><i class="fas fa-globe"></i></a>
+            </div>
+            <p>&copy; <span id="currentYear"></span> - Ejercicios de Programación Web Futurista</p>
+            <p>Desarrollado con las últimas tecnologías web</p>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar fecha actual
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Año actual para el footer
+        document.getElementById('currentYear').textContent = now.getFullYear();
+
+        // Efecto de entrada para las tarjetas
+        const cards = document.querySelectorAll('.exercise-card');
+        cards.forEach((card, index) => {
+            card.style.animation = `floatUp 0.6s ease-out ${index * 0.1}s both`;
+        });
+
+        // Cursor personalizado
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+        
+        // Efecto al hacer hover en enlaces
+        const hoverElements = document.querySelectorAll('a, button, .exercise-card');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursor.style.background = 'rgba(136, 211, 206, 0.7)';
+                cursorFollower.style.width = '30px';
+                cursorFollower.style.height = '30px';
+                cursorFollower.style.borderColor = 'rgba(110, 69, 226, 0.7)';
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.background = 'rgba(110, 69, 226, 0.5)';
+                cursorFollower.style.width = '40px';
+                cursorFollower.style.height = '40px';
+                cursorFollower.style.borderColor = 'rgba(136, 211, 206, 0.5)';
+            });
+        });
+
+        // Crear partículas de fondo
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Tamaño aleatorio entre 2px y 6px
+            const size = Math.random() * 4 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Posición inicial aleatoria
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            
+            // Opacidad aleatoria
+            particle.style.opacity = Math.random() * 0.5 + 0.1;
+            
+            // Duración de animación aleatoria
+            const duration = Math.random() * 20 + 10;
+            particle.style.animationDuration = `${duration}s`;
+            
+            // Retraso de animación aleatorio
+            particle.style.animationDelay = `${Math.random() * 10}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+
+        // Efecto de escritura para el nombre del autor
+        const authorName = document.querySelector('.author-name');
+        if (authorName.textContent === '[Tu Nombre]') {
+            const name = "Desarrollador Futurista";
+            let i = 0;
+            authorName.textContent = '';
+            
+            const typeWriter = () => {
+                if (i < name.length) {
+                    authorName.textContent += name.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            setTimeout(typeWriter, 1000);
+        }
+    </script>
+</body>
+</html>

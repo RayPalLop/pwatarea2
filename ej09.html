@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador de Cuenta Regresiva</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+        }
+
+        .countdown-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .time-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-value {
+            font-size: 4rem;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 25px;
+            border-radius: 10px;
+            min-width: 100px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-value::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                            transparent 25%, 
+                            rgba(255, 255, 255, 0.1) 50%, 
+                            transparent 75%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .time-label {
+            margin-top: 10px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .colon {
+            font-size: 4rem;
+            display: flex;
+            align-items: center;
+            color: #fc00ff;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #startBtn {
+            background: linear-gradient(90deg, #00dbde, #fc00ff);
+            color: white;
+        }
+
+        #resetBtn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            width: 60px;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #fc00ff;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #00dbde;
+            height: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .timer {
+                gap: 10px;
+            }
+            .time-value {
+                font-size: 2.5rem;
+                min-width: 70px;
+                padding: 10px 15px;
+            }
+            .colon {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <h1>Cuenta Regresiva</h1>
+        
+        <div class="input-group">
+            <div>
+                <input type="number" id="hours" min="0" max="99" value="0">
+                <div class="time-label">Horas</div>
+            </div>
+            <div>
+                <input type="number" id="minutes" min="0" max="59" value="10">
+                <div class="time-label">Minutos</div>
+            </div>
+            <div>
+                <input type="number" id="seconds" min="0" max="59" value="0">
+                <div class="time-label">Segundos</div>
+            </div>
+        </div>
+        
+        <div class="timer">
+            <div class="time-section">
+                <div class="time-value" id="displayHours">00</div>
+                <div class="time-label">Horas</div>
+            </div>
+            <div class="colon">:</div>
+            <div class="time-section">
+                <div class="time-value" id="displayMinutes">10</div>
+                <div class="time-label">Minutos</div>
+            </div>
+            <div class="colon">:</div>
+            <div class="time-section">
+                <div class="time-value" id="displaySeconds">00</div>
+                <div class="time-label">Segundos</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn">Iniciar</button>
+            <button id="resetBtn">Reiniciar</button>
+        </div>
+        
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hoursInput = document.getElementById('hours');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            
+            const displayHours = document.getElementById('displayHours');
+            const displayMinutes = document.getElementById('displayMinutes');
+            const displaySeconds = document.getElementById('displaySeconds');
+            
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const messageEl = document.getElementById('message');
+            
+            let countdown;
+            let isRunning = false;
+            let totalSeconds = 0;
+            
+            // Validar inputs
+            function validateInputs() {
+                if (hoursInput.value < 0) hoursInput.value = 0;
+                if (minutesInput.value < 0) minutesInput.value = 0;
+                if (secondsInput.value < 0) secondsInput.value = 0;
+                
+                if (minutesInput.value > 59) minutesInput.value = 59;
+                if (secondsInput.value > 59) secondsInput.value = 59;
+            }
+            
+            // Actualizar display
+            function updateDisplay() {
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                displayHours.textContent = hours.toString().padStart(2, '0');
+                displayMinutes.textContent = minutes.toString().padStart(2, '0');
+                displaySeconds.textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Iniciar cuenta regresiva
+            function startCountdown() {
+                if (isRunning) return;
+                
+                validateInputs();
+                
+                const hours = parseInt(hoursInput.value) || 0;
+                const minutes = parseInt(minutesInput.value) || 0;
+                const seconds = parseInt(secondsInput.value) || 0;
+                
+                totalSeconds = hours * 3600 + minutes * 60 + seconds;
+                
+                if (totalSeconds <= 0) {
+                    messageEl.textContent = "¡Ingrese un tiempo válido!";
+                    return;
+                }
+                
+                isRunning = true;
+                startBtn.textContent = "Pausar";
+                messageEl.textContent = "Cuenta regresiva en progreso...";
+                
+                updateDisplay();
+                
+                countdown = setInterval(function() {
+                    if (totalSeconds <= 0) {
+                        clearInterval(countdown);
+                        isRunning = false;
+                        startBtn.textContent = "Iniciar";
+                        messageEl.textContent = "¡Tiempo terminado!";
+                        document.title = "¡Tiempo terminado!";
+                        
+                        // Efecto de finalización
+                        document.body.style.animation = "flash 0.5s 3";
+                        setTimeout(() => {
+                            document.body.style.animation = "";
+                        }, 1500);
+                        
+                        return;
+                    }
+                    
+                    totalSeconds--;
+                    updateDisplay();
+                    
+                    // Actualizar título de la página
+                    document.title = `${displayHours.textContent}:${displayMinutes.textContent}:${displaySeconds.textContent} - Cuenta Regresiva`;
+                    
+                }, 1000);
+            }
+            
+            // Pausar cuenta regresiva
+            function pauseCountdown() {
+                clearInterval(countdown);
+                isRunning = false;
+                startBtn.textContent = "Iniciar";
+                messageEl.textContent = "Cuenta regresiva pausada";
+            }
+            
+            // Reiniciar cuenta regresiva
+            function resetCountdown() {
+                clearInterval(countdown);
+                isRunning = false;
+                startBtn.textContent = "Iniciar";
+                messageEl.textContent = "";
+                document.title = "Cuenta Regresiva";
+                
+                hoursInput.value = "0";
+                minutesInput.value = "10";
+                secondsInput.value = "0";
+                
+                displayHours.textContent = "00";
+                displayMinutes.textContent = "10";
+                displaySeconds.textContent = "00";
+            }
+            
+            // Event listeners
+            startBtn.addEventListener('click', function() {
+                if (isRunning) {
+                    pauseCountdown();
+                } else {
+                    startCountdown();
+                }
+            });
+            
+            resetBtn.addEventListener('click', resetCountdown);
+            
+            // Validar inputs mientras se escribe
+            hoursInput.addEventListener('input', validateInputs);
+            minutesInput.addEventListener('input', validateInputs);
+            secondsInput.addEventListener('input', validateInputs);
+            
+            // Inicializar con valores por defecto
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>

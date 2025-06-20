@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1 - Cambio de Estilo al Clic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #25272c 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .color-box {
+            width: 300px;
+            height: 300px;
+            background: #f0f0f0;
+            margin: 30px auto;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid transparent;
+        }
+
+        .color-box.animated {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn.reset {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn.reset:hover {
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn.random {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn.random:hover {
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        .color-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .color-info h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .color-code {
+            font-family: 'Courier New', monospace;
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .color-box {
+                width: 250px;
+                height: 250px;
+                font-size: 1.2em;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Volver al Menú</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Ejercicio 1</h1>
+            <p>Cambio de Estilo al dar Clic</p>
+        </div>
+
+        <div id="colorBox" class="color-box">
+            Haz clic en un botón para cambiar mi color
+        </div>
+
+        <div class="button-group">
+            <button class="btn" onclick="changeColor()">Cambiar Color</button>
+            <button class="btn random" onclick="randomColor()">Color Aleatorio</button>
+            <button class="btn reset" onclick="resetColor()">Resetear</button>
+        </div>
+
+        
+    </div>
+
+    <script>
+        // Paleta de colores predefinidos
+        const colorPalette = [
+            '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', 
+            '#ffeaa7', '#dda0dd', '#98d8c8', '#ff7675',
+            '#74b9ff', '#a29bfe', '#fd79a8', '#fdcb6e'
+        ];
+
+        let currentColorIndex = 0;
+        const originalColor = '#f0f0f0';
+
+        // Referencias a elementos DOM
+        const colorBox = document.getElementById('colorBox');
+        const colorCode = document.getElementById('colorCode');
+
+        // Función para cambiar color secuencialmente
+        function changeColor() {
+            const newColor = colorPalette[currentColorIndex];
+            
+            // Aplicar el color con animación
+            colorBox.classList.add('animated');
+            colorBox.style.backgroundColor = newColor;
+            colorBox.style.color = getContrastColor(newColor);
+            colorBox.textContent = `Color ${currentColorIndex + 1}`;
+            
+            // Actualizar código de color
+            colorCode.textContent = newColor.toUpperCase();
+            colorCode.style.backgroundColor = newColor;
+            
+            // Avanzar al siguiente color
+            currentColorIndex = (currentColorIndex + 1) % colorPalette.length;
+            
+            // Remover animación después de un tiempo
+            setTimeout(() => {
+                colorBox.classList.remove('animated');
+            }, 500);
+        }
+
+        // Función para generar color aleatorio
+        function randomColor() {
+            const randomHex = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            
+            colorBox.classList.add('animated');
+            colorBox.style.backgroundColor = randomHex;
+            colorBox.style.color = getContrastColor(randomHex);
+            colorBox.textContent = 'Color Aleatorio';
+            
+            // Actualizar código de color
+            colorCode.textContent = randomHex.toUpperCase();
+            colorCode.style.backgroundColor = randomHex;
+            
+            setTimeout(() => {
+                colorBox.classList.remove('animated');
+            }, 500);
+        }
+
+        // Función para resetear al color original
+        function resetColor() {
+            colorBox.classList.add('animated');
+            colorBox.style.backgroundColor = originalColor;
+            colorBox.style.color = '#333';
+            colorBox.textContent = 'Haz clic en un botón para cambiar mi color';
+            
+            // Resetear código de color
+            colorCode.textContent = originalColor.toUpperCase();
+            colorCode.style.backgroundColor = '#667eea';
+            
+            // Resetear índice
+            currentColorIndex = 0;
+            
+            setTimeout(() => {
+                colorBox.classList.remove('animated');
+            }, 500);
+        }
+
+        // Función para determinar el color de texto basado en el contraste
+        function getContrastColor(hexColor) {
+            // Convertir hex a RGB
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+            
+            // Calcular luminancia
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            
+            // Retornar color de texto apropiado
+            return luminance > 0.5 ? '#333' : '#fff';
+        }
+
+        // Agregar efectos de teclado
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case '1':
+                    changeColor();
+                    break;
+                case '2':
+                    randomColor();
+                    break;
+                case '3':
+                case 'r':
+                case 'R':
+                    resetColor();
+                    break;
+            }
+        });
+
+        // Mostrar instrucciones de teclado
+        setTimeout(() => {
+            const instructions = document.createElement('div');
+            instructions.innerHTML = `
+                <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 15px; border-radius: 10px; font-size: 0.9em;">
+                    <strong>Atajos de teclado:</strong><br>
+                    1 - Cambiar Color<br>
+                    2 - Color Aleatorio<br>
+                    3 o R - Resetear
+                </div>
+            `;
+            document.body.appendChild(instructions);
+            
+            // Ocultar después de 5 segundos
+            setTimeout(() => {
+                instructions.style.opacity = '0';
+                instructions.style.transition = 'opacity 1s';
+                setTimeout(() => instructions.remove(), 1000);
+            }, 5000);
+        }, 2000);
+    </script>
+</body>
+</html>

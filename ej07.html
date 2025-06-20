@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Futurista</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(145deg, #b5195c, #1a1a1a);
+      color: #00ffe7;
+    }
+
+    nav {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      box-shadow: 0 0 10px #00ffe7;
+    }
+
+    ul.menu {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    ul.menu > li {
+      position: relative;
+      cursor: pointer;
+    }
+
+    ul.menu > li > a {
+      color: #00ffe7;
+      text-decoration: none;
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    ul.menu > li:hover > a {
+      border-color: #00ffe7;
+      background-color: rgba(0, 255, 231, 0.1);
+      border-radius: 10px;
+    }
+
+    .submenu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #1a1a1a;
+      box-shadow: 0 0 10px #00ffe7;
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .submenu a {
+      display: block;
+      padding: 0.7rem 1.2rem;
+      color: #00ffe7;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .submenu a:hover {
+      background: #00ffe7;
+      color: #1a1a1a;
+    }
+
+    .active .submenu {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Import futuristic font */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+  </style>
+</head>
+<body>
+
+<nav>
+  <ul class="menu">
+    <li onclick="toggleSubmenu(this)">
+      <a href="#">Inicio</a>
+      <div class="submenu">
+        <a href="#">Presentación</a>
+        <a href="#">Noticias</a>
+      </div>
+    </li>
+    <li onclick="toggleSubmenu(this)">
+      <a href="#">Servicios</a>
+      <div class="submenu">
+        <a href="#">Desarrollo Web</a>
+        <a href="#">Diseño Gráfico</a>
+        <a href="#">Consultoría</a>
+      </div>
+    </li>
+    <li onclick="toggleSubmenu(this)">
+      <a href="#">Contacto</a>
+      <div class="submenu">
+        <a href="#">Email</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  function toggleSubmenu(element) {
+    // Cierra otros submenús abiertos
+    document.querySelectorAll('.menu > li').forEach(item => {
+      if (item !== element) {
+        item.classList.remove('active');
+      }
+    });
+    // Alternar visibilidad del submenú
+    element.classList.toggle('active');
+  }
+
+  // Cierra submenús al hacer clic fuera del menú
+  document.addEventListener('click', function (e) {
+    const isClickInside = e.target.closest('nav');
+    if (!isClickInside) {
+      document.querySelectorAll('.menu > li').forEach(item => item.classList.remove('active'));
+    }
+  });
+</script>
+
+</body>
+</html>
